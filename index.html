@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎮 游戏成瘾知识库</title>
+<style>
+  :root {
+    --bg: #fff7f0; --bg-card: #ffffff; --primary: #ff6b6b; --primary-light: #ffe8e8;
+    --blue: #4ecdc4; --blue-light: #e0f7f5; --purple: #a78bfa; --purple-light: #ede9fe;
+    --orange: #fb923c; --orange-light: #fff3e6; --green: #34d399; --green-light: #d1fae5;
+    --yellow: #fbbf24; --yellow-light: #fef9c3; --pink: #f472b6; --pink-light: #fce7f3;
+    --text: #334155; --text-secondary: #64748b; --border: #e2e8f0;
+    --shadow: 0 2px 8px rgba(0,0,0,0.06); --shadow-hover: 0 6px 20px rgba(0,0,0,0.1);
+    --radius: 16px; --radius-sm: 10px; --nav-height: 120px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans SC', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; padding-top: var(--nav-height); }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; height: var(--nav-height);
+    background: rgba(255,255,255,0.96); backdrop-filter: blur(12px);
+    border-bottom: 2px solid var(--border); z-index: 1000;
+    display: flex; flex-direction: column; box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  nav .nav-top { display: flex; align-items: center; padding: 8px 24px 4px; gap: 12px; }
+  nav .logo { font-size: 20px; font-weight: 800; }
+  nav .logo .c1 { color: var(--primary); } nav .logo .c2 { color: var(--blue); }
+  nav .logo .c3 { color: var(--purple); } nav .logo .c4 { color: var(--orange); }
+  nav .nav-links { display: flex; gap: 2px; padding: 0 24px 8px; overflow-x: auto; flex-wrap: wrap; }
+  nav .nav-links a {
+    text-decoration: none; color: var(--text-secondary); font-size: 13px; font-weight: 600;
+    padding: 5px 14px; border-radius: 20px; white-space: nowrap; transition: all 0.2s;
+  }
+  nav .nav-links a:hover, nav .nav-links a.active { background: var(--primary-light); color: var(--primary); }
+  nav .nav-links a .badge { font-size: 10px; background: var(--border); color: var(--text-secondary); border-radius: 10px; padding: 1px 7px; margin-left: 3px; }
+  nav .nav-row2 { display: flex; gap: 2px; padding: 0 24px 8px; overflow-x: auto; flex-wrap: wrap; }
+  nav .nav-row2 a {
+    text-decoration: none; font-size: 12px; font-weight: 600; padding: 4px 14px;
+    border-radius: 20px; white-space: nowrap; transition: all 0.2s; cursor: pointer;
+  }
+  nav .nav-row2 a.f1 { color: #ff6b6b; background: var(--primary-light); }
+  nav .nav-row2 a.f1:hover { background: #fecaca; }
+  nav .nav-row2 a.f2 { color: #7c3aed; background: var(--purple-light); }
+  nav .nav-row2 a.f2:hover { background: #ddd6fe; }
+  nav .nav-row2 a.f3 { color: #0d9488; background: var(--blue-light); }
+  nav .nav-row2 a.f3:hover { background: #b2f5ea; }
+  nav .nav-row2 a.f4 { color: #d97706; background: var(--orange-light); }
+  nav .nav-row2 a.f4:hover { background: #fed7aa; }
+
+  .hero {
+    background: linear-gradient(135deg, #ff6b6b 0%, #fbbf24 50%, #4ecdc4 100%);
+    color: white; padding: 48px 24px; text-align: center; position: relative; overflow: hidden;
+  }
+  .hero::before { content: '🎮 🎲 🕹️ 👾 🎯'; position: absolute; top: 10px; left: 0; right: 0; font-size: 48px; letter-spacing: 24px; opacity: 0.15; white-space: nowrap; overflow: hidden; }
+  .hero h1 { font-size: 34px; margin-bottom: 8px; position: relative; }
+  .hero p { font-size: 16px; opacity: 0.95; max-width: 700px; margin: 0 auto; position: relative; }
+  .hero .stats { display: flex; justify-content: center; gap: 20px; margin-top: 20px; flex-wrap: wrap; position: relative; }
+  .hero .stat-item { background: rgba(255,255,255,0.2); backdrop-filter: blur(4px); border-radius: 16px; padding: 12px 20px; min-width: 80px; }
+  .hero .stat-num { font-size: 26px; font-weight: 800; }
+  .hero .stat-label { font-size: 12px; opacity: 0.9; }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 24px 20px; }
+  .section { margin-bottom: 48px; }
+  .section-header h2 { font-size: 24px; margin-bottom: 16px; }
+
+  .summary-box { background: linear-gradient(135deg, var(--blue-light), var(--purple-light)); border-radius: var(--radius); padding: 28px 32px; border-left: 6px solid var(--blue); margin-bottom: 32px; }
+  .summary-box .sum-item { margin-bottom: 16px; padding-left: 20px; border-left: 3px solid rgba(78,205,196,0.3); }
+  .summary-box .sum-item:last-child { margin-bottom: 0; }
+  .summary-box .sum-item h4 { font-size: 15px; color: #0d9488; margin-bottom: 4px; }
+  .summary-box .sum-item p, .summary-box .sum-item li { font-size: 13px; color: var(--text-secondary); line-height: 1.7; }
+  .summary-box .sum-item ul { padding-left: 20px; margin-top: 4px; }
+  .summary-box .sum-item li { margin-bottom: 2px; }
+
+  .criteria-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; margin-bottom: 24px; }
+  .criteria-card { background: var(--bg-card); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); border-top: 4px solid var(--primary); transition: all 0.25s; }
+  .criteria-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-3px); }
+  .criteria-card .num { display: inline-flex; width: 28px; height: 28px; border-radius: 50%; background: var(--primary-light); color: var(--primary); font-weight: 700; font-size: 14px; align-items: center; justify-content: center; margin-bottom: 6px; }
+  .criteria-card h3 { font-size: 16px; margin-bottom: 6px; }
+  .criteria-card .desc { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .criteria-card .tag { display: inline-block; font-size: 11px; padding: 2px 10px; border-radius: 12px; background: var(--primary-light); color: var(--primary); margin-top: 8px; font-weight: 600; }
+  .criteria-card.icd { border-top-color: var(--purple); }
+  .criteria-card.icd .num { background: var(--purple-light); color: var(--purple); }
+  .criteria-card.icd .tag { background: var(--purple-light); color: var(--purple); }
+
+  .comp-wrap { overflow-x: auto; border-radius: var(--radius); box-shadow: var(--shadow); }
+  .comp-table { width: 100%; border-collapse: collapse; background: var(--bg-card); }
+  .comp-table th { padding: 12px 16px; font-size: 13px; font-weight: 700; text-align: left; }
+  .comp-table th:first-child { background: #fff7f0; color: var(--primary); }
+  .comp-table th:nth-child(2) { background: var(--blue-light); color: #0d9488; }
+  .comp-table th:nth-child(3) { background: var(--purple-light); color: #7c3aed; }
+  .comp-table td { padding: 12px 16px; font-size: 13px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .comp-table tr:hover td { background: #fffbf5; }
+  .comp-table td:first-child { font-weight: 700; color: var(--text); white-space: nowrap; }
+
+  .tool-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 16px; }
+  .tool-card { background: var(--bg-card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: all 0.25s; }
+  .tool-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-3px); }
+  .tool-card-header { padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+  .tool-card-header .toggle-icon { font-size: 16px; transition: transform 0.3s; }
+  .tool-card-header .toggle-icon.open { transform: rotate(180deg); }
+  .tool-card-header.t1 { background: linear-gradient(135deg, #4ecdc4, #2dd4bf); color: white; }
+  .tool-card-header.t2 { background: linear-gradient(135deg, #a78bfa, #8b5cf6); color: white; }
+  .tool-card-header.t3 { background: linear-gradient(135deg, #fb923c, #f97316); color: white; }
+  .tool-card-header.t4 { background: linear-gradient(135deg, #34d399, #10b981); color: white; }
+  .tool-card-header.t5 { background: linear-gradient(135deg, #f472b6, #ec4899); color: white; }
+  .tool-card-header.t6 { background: linear-gradient(135deg, #fbbf24, #f59e0b); color: white; }
+  .tool-card-header .tname { font-size: 15px; font-weight: 700; }
+  .tool-card-header .tabbr { font-size: 20px; font-weight: 800; opacity: 0.9; }
+  .tool-card-body { padding: 14px 18px 18px; }
+  .tool-card-body .tmeta { font-size: 12px; color: var(--text-secondary); margin-bottom: 8px; }
+  .tool-card-body .tmeta span { display: inline-block; margin-right: 12px; }
+  .tool-card-body .titems-wrap { overflow: hidden; transition: max-height 0.4s ease; max-height: 0; }
+  .tool-card-body .titems-wrap.open { max-height: 2000px; }
+  .tool-card-body .titems { font-size: 13px; line-height: 1.8; padding-top: 8px; border-top: 1px dashed var(--border); }
+  .tool-card-body .titems strong { color: var(--primary); }
+  .tool-card-body .tref { font-size: 12px; color: var(--text-secondary); margin-top: 10px; }
+  .tool-card-body .tref a { color: var(--blue); text-decoration: none; font-weight: 600; }
+  .tool-card-body .tref a:hover { text-decoration: underline; }
+  .tool-card-body .expand-btn { display: inline-block; font-size: 12px; font-weight: 700; color: var(--blue); background: var(--blue-light); border: none; border-radius: 20px; padding: 5px 16px; cursor: pointer; margin-top: 8px; transition: all 0.2s; }
+  .tool-card-body .expand-btn:hover { background: #b2f5ea; }
+  .tool-card-body .expand-btn .arrow { display: inline-block; transition: transform 0.3s; margin-left: 4px; }
+  .tool-card-body .expand-btn .arrow.open { transform: rotate(180deg); }
+
+  .timeline { position: relative; padding-left: 36px; }
+  .timeline::before { content: ''; position: absolute; left: 14px; top: 0; bottom: 0; width: 3px; background: linear-gradient(to bottom, var(--primary), var(--blue), var(--purple), var(--orange)); border-radius: 3px; }
+  .timeline-item { position: relative; margin-bottom: 22px; }
+  .timeline-item::before { content: ''; position: absolute; left: -26px; top: 6px; width: 14px; height: 14px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+  .timeline-item:nth-child(1)::before { background: var(--primary); }
+  .timeline-item:nth-child(2)::before { background: var(--blue); }
+  .timeline-item:nth-child(3)::before { background: var(--purple); }
+  .timeline-item:nth-child(4)::before { background: var(--orange); }
+  .timeline-item:nth-child(5)::before { background: var(--pink); }
+  .timeline-item:nth-child(6)::before { background: var(--green); }
+  .timeline-item .tl-year { font-size: 13px; font-weight: 800; margin-bottom: 4px; }
+  .timeline-item:nth-child(1) .tl-year { color: var(--primary); }
+  .timeline-item:nth-child(2) .tl-year { color: var(--blue); }
+  .timeline-item:nth-child(3) .tl-year { color: var(--purple); }
+  .timeline-item:nth-child(4) .tl-year { color: var(--orange); }
+  .timeline-item:nth-child(5) .tl-year { color: var(--pink); }
+  .timeline-item:nth-child(6) .tl-year { color: var(--green); }
+  .timeline-item .tl-card { background: var(--bg-card); border-radius: var(--radius-sm); padding: 14px 18px; box-shadow: var(--shadow); transition: box-shadow 0.2s; }
+  .timeline-item .tl-card:hover { box-shadow: var(--shadow-hover); }
+  .timeline-item .tl-title { font-size: 14px; font-weight: 700; }
+  .timeline-item .tl-meta { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+  .timeline-item .tl-badge { display: inline-block; font-size: 10px; padding: 2px 10px; border-radius: 12px; margin-top: 6px; font-weight: 600; }
+  .tl-badge.sr-ma { background: var(--purple-light); color: #7c3aed; }
+  .tl-badge.sr { background: var(--blue-light); color: #0d9488; }
+  .tl-badge.original { background: var(--orange-light); color: #d97706; }
+  .tl-badge.theory { background: var(--pink-light); color: #db2777; }
+  .tl-badge.milestone { background: #fef9c3; color: #a16207; }
+
+  .ov-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; }
+  .ov-card { background: var(--bg-card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: all 0.25s; }
+  .ov-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
+  .ov-card .ov-header {
+    padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer;
+    border-left: 5px solid var(--blue); user-select: none;
+  }
+  .ov-card.purple .ov-header { border-left-color: var(--purple); }
+  .ov-card.orange .ov-header { border-left-color: var(--orange); }
+  .ov-card.pink .ov-header { border-left-color: var(--pink); }
+  .ov-card.green .ov-header { border-left-color: var(--green); }
+  .ov-card.yellow .ov-header { border-left-color: #fbbf24; }
+  .ov-card .ov-header h3 { font-size: 16px; display: flex; align-items: center; gap: 8px; }
+  .ov-card .ov-toggle { font-size: 14px; color: var(--text-secondary); transition: transform 0.3s; }
+  .ov-card .ov-toggle.open { transform: rotate(180deg); }
+  .ov-card .ov-body { overflow: hidden; transition: max-height 0.4s ease; max-height: 0; }
+  .ov-card .ov-body.open { max-height: 2000px; }
+  .ov-card .ov-body-inner { padding: 0 20px 16px; }
+  .ov-card ul { list-style: none; padding: 0; }
+  .ov-card li { font-size: 13px; padding: 7px 0; border-bottom: 1px solid var(--border); line-height: 1.5; }
+  .ov-card li:last-child { border-bottom: none; }
+  .ov-card li .yr { font-size: 11px; font-weight: 700; padding: 1px 8px; border-radius: 8px; white-space: nowrap; }
+  .ov-card li .yr.p1 { background: var(--primary-light); color: var(--primary); }
+  .ov-card li .yr.p2 { background: var(--blue-light); color: #0d9488; }
+  .ov-card li .yr.p3 { background: var(--purple-light); color: #7c3aed; }
+  .ov-card li .yr.p4 { background: var(--orange-light); color: #d97706; }
+  .ov-card li a { color: var(--text); text-decoration: none; }
+  .ov-card li a:hover { color: var(--blue); text-decoration: underline; }
+  .ov-card li .doi-icon { font-size: 11px; margin-left: 4px; opacity: 0.6; }
+  .ov-card .ov-desc { font-size: 13px; color: var(--text-secondary); margin-bottom: 10px; }
+
+  .kc-controls { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+  .kc-controls input { flex: 1; min-width: 200px; padding: 10px 18px; border: 2px solid var(--border); border-radius: 30px; font-size: 14px; outline: none; transition: all 0.2s; background: var(--bg-card); }
+  .kc-controls input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(78,205,196,0.2); }
+  .kc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 14px; }
+  .kc-card { background: var(--bg-card); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: all 0.25s; border: 2px solid transparent; cursor: pointer; }
+  .kc-card:hover { box-shadow: var(--shadow-hover); border-color: var(--blue); transform: translateY(-3px); }
+  .kc-card-header { padding: 14px 18px 10px; display: flex; justify-content: space-between; align-items: center; }
+  .kc-card-header .kc-year { font-size: 13px; font-weight: 800; color: white; border-radius: 8px; padding: 3px 12px; }
+  .kc-card-header .kc-year.y1 { background: var(--primary); }
+  .kc-card-header .kc-year.y2 { background: var(--blue); }
+  .kc-card-header .kc-year.y3 { background: var(--purple); }
+  .kc-card-header .kc-year.y4 { background: var(--orange); }
+  .kc-card-header .kc-year.y5 { background: var(--pink); }
+  .kc-card-header .kc-badges { display: flex; gap: 4px; flex-wrap: wrap; }
+  .kc-card-header .kc-badge { font-size: 10px; padding: 2px 10px; border-radius: 12px; font-weight: 600; }
+  .kc-card-body { padding: 8px 18px 16px; }
+  .kc-card-body .kc-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; line-height: 1.4; }
+  .kc-card-body .kc-authors { font-size: 12px; color: var(--text-secondary); margin-bottom: 2px; }
+  .kc-card-body .kc-journal { font-size: 11px; color: var(--text-secondary); font-style: italic; margin-bottom: 8px; }
+  .kc-card-body .kc-core { font-size: 13px; line-height: 1.7; }
+  .kc-card-body .kc-core strong { color: var(--primary); }
+  .kc-card-body .kc-links { margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap; }
+  .kc-card-body .kc-links a { font-size: 12px; text-decoration: none; padding: 4px 14px; border-radius: 20px; transition: all 0.2s; font-weight: 600; }
+  .kc-card-body .kc-links a.doi-link { color: var(--blue); border: 2px solid var(--blue); }
+  .kc-card-body .kc-links a.doi-link:hover { background: var(--blue); color: white; }
+  .kc-card-body .kc-links a.copy-link { color: var(--purple); border: 2px solid var(--purple); }
+  .kc-card-body .kc-links a.copy-link:hover { background: var(--purple); color: white; }
+
+  .scroll-top { position: fixed; bottom: 24px; right: 24px; width: 48px; height: 48px; border-radius: 50%; border: none; font-size: 22px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 999; display: none; transition: all 0.2s; background: linear-gradient(135deg, var(--primary), var(--orange)); color: white; }
+  .scroll-top:hover { transform: scale(1.15); }
+
+  @media (max-width: 768px) {
+    :root { --nav-height: 140px; }
+    nav .nav-top { padding: 8px 12px 4px; }
+    nav .logo { font-size: 16px; }
+    nav .nav-links { padding: 0 12px 4px; }
+    nav .nav-links a { font-size: 11px; padding: 4px 10px; }
+    nav .nav-row2 { padding: 0 12px 8px; }
+    nav .nav-row2 a { font-size: 11px; padding: 3px 10px; }
+    .hero { padding: 32px 16px; }
+    .hero h1 { font-size: 24px; }
+    .hero .stats { gap: 10px; }
+    .hero .stat-item { padding: 8px 14px; min-width: 60px; }
+    .hero .stat-num { font-size: 20px; }
+    .criteria-grid { grid-template-columns: 1fr; }
+    .tool-grid { grid-template-columns: 1fr; }
+    .kc-grid { grid-template-columns: 1fr; }
+    .ov-grid { grid-template-columns: 1fr; }
+    .container { padding: 16px; }
+    .summary-box { padding: 20px; }
+  }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  .kc-card, .criteria-card, .tool-card, .timeline-item, .ov-card { animation: fadeIn 0.35s ease-out; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-top">
+    <div class="logo"><span class="c1">🎮</span> <span class="c2">游戏</span><span class="c3">成瘾</span> <span class="c4">知识库</span></div>
+  </div>
+  <div class="nav-links">
+    <a href="#summary" class="active" onclick="scrollTo('summary')">📖 总结</a>
+    <a href="#criteria" onclick="scrollTo('criteria')">📋 判断标准</a>
+    <a href="#compare" onclick="scrollTo('compare')">⚖️ DSM-5 vs ICD-11</a>
+    <a href="#tools" onclick="scrollTo('tools')">🔬 评估工具</a>
+    <a href="#timeline" onclick="scrollTo('timeline')">📅 发展历程</a>
+    <a href="#overview" onclick="scrollTo('overview')">📚 文献概览</a>
+    <a href="#cards" onclick="scrollTo('cards')">📇 知识卡片 <span class="badge">35</span></a>
+  </div>
+  <div class="nav-row2">
+    <a class="f1" onclick="filterAndScroll('all')">📚 全部文献</a>
+    <a class="f2" onclick="filterAndScroll('direct')">🎯 直接相关</a>
+    <a class="f3" onclick="filterAndScroll('sr')">🔍 系统综述/元分析</a>
+    <a class="f4" onclick="filterAndScroll('classic')">⭐ 经典文献</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <h1>🎮 游戏成瘾判断标准与方法</h1>
+  <p>基于 35 篇科学文献的系统梳理</p>
+  <div class="stats">
+    <div class="stat-item"><div class="stat-num">35</div><div class="stat-label">📄 总文献</div></div>
+    <div class="stat-item"><div class="stat-num">11</div><div class="stat-label">🔍 系统综述</div></div>
+    <div class="stat-item"><div class="stat-num">15</div><div class="stat-label">🎯 直接相关</div></div>
+    <div class="stat-item"><div class="stat-num">2</div><div class="stat-label">🏥 诊断体系</div></div>
+    <div class="stat-item"><div class="stat-num">8+</div><div class="stat-label">📝 评估工具</div></div>
+  </div>
+</div>
+
+<div class="container">
+
+<div class="section" id="summary">
+  <div class="section-header"><h2>📖 先看总结</h2></div>
+  <div class="summary-box">
+    <div class="sum-item">
+      <h4>🎯 什么是游戏成瘾？</h4>
+      <p>游戏成瘾在医学上叫 <strong>"游戏障碍"（Gaming Disorder）</strong>，指一个人对游戏失去控制、把游戏放在第一位、明知有坏结果还是继续玩。目前有两套诊断体系：</p>
+      <ul>
+        <li><strong>🇺🇸 DSM-5</strong>（2013）：9 条标准（沉迷、戒断、耐受、失控、放弃爱好、明知有害还玩、欺骗、逃避情绪、功能损害），满足 <strong>≥5 条</strong>、持续 12 个月。标准较宽，容易高估。</li>
+        <li><strong>🌐 ICD-11</strong>（2019，WHO）：3 条核心特征（失控、优先、不顾后果），<strong>全部满足</strong>才诊断。标准更严格，不易误诊。</li>
+      </ul>
+    </div>
+    <div class="sum-item">
+      <h4>🔬 怎么判断？</h4>
+      <p>科学家开发了专门的问卷来测量：<strong>IGDS</strong>（27题，最早基于 DSM-5）、<strong>IGDS9-SF</strong>（9题，使用最广，20+ 种语言）、<strong>IGDT-10</strong>（10题，7 种语言跨文化验证）、<strong>GDT</strong>（4题，基于 ICD-11 最新工具）。<strong>⚠️ 选哪个工具能解释 77% 的患病率差异</strong>——工具的选择非常关键。</p>
+    </div>
+    <div class="sum-item">
+      <h4>📊 有多常见？</h4>
+      <p>全球约 <strong>3%</strong> 的人有游戏障碍（Stevens 2021，53 项研究 22 万人），男性约是女性的 2.5 倍，青少年约 4.6%。</p>
+    </div>
+    <div class="sum-item">
+      <h4>🧩 为什么会成瘾？</h4>
+      <p><strong>Griffiths 六成分模型</strong>（2005）：显著性、情绪调节、耐受、戒断、冲突、复发。<strong>Brand I-PACE 模型</strong>（2016）：易感因素 × 对游戏的反应 × 执行控制下降的交互作用。</p>
+    </div>
+  </div>
+</div>
+
+<div class="section" id="criteria">
+  <div class="section-header"><h2>📋 判断标准</h2></div>
+  <div style="background:var(--blue-light);border-radius:var(--radius);padding:14px 20px;margin-bottom:16px;">
+    <strong style="color:#0d9488;">🇺🇸 DSM-5</strong> <span style="font-size:13px;color:var(--text-secondary);">9 条标准中满足 ≥5 条，持续 12 个月</span>
+  </div>
+  <div class="criteria-grid">
+    <div class="criteria-card"><div class="num">1</div><h3>🎯 沉迷游戏</h3><div class="desc">整天想着游戏，总在期待下一次玩，游戏成了生活中最重要的事</div><span class="tag">Preoccupation</span></div>
+    <div class="criteria-card"><div class="num">2</div><h3>😤 戒断反应</h3><div class="desc">不能玩的时候烦躁、焦虑、难过，像少了什么东西</div><span class="tag">Withdrawal</span></div>
+    <div class="criteria-card"><div class="num">3</div><h3>📈 越来越"上瘾"</h3><div class="desc">需要越玩越久才能得到同样的满足感</div><span class="tag">Tolerance</span></div>
+    <div class="criteria-card"><div class="num">4</div><h3>✋ 控制不住</h3><div class="desc">想少玩、想停下来，但总是做不到</div><span class="tag">Loss of Control</span></div>
+    <div class="criteria-card"><div class="num">5</div><h3>🚫 放弃其他爱好</h3><div class="desc">以前喜欢打球、画画、和朋友玩，现在都不想去了</div><span class="tag">Loss of Interest</span></div>
+    <div class="criteria-card"><div class="num">6</div><h3>🔄 明知有问题还在玩</h3><div class="desc">知道影响了学习、关系，还是停不下来</div><span class="tag">Continued Use</span></div>
+    <div class="criteria-card"><div class="num">7</div><h3>🤫 偷偷玩</h3><div class="desc">对家人、朋友隐瞒玩了多少时间</div><span class="tag">Deception</span></div>
+    <div class="criteria-card"><div class="num">8</div><h3>🏃 逃避不开心</h3><div class="desc">用游戏逃避难过、焦虑、内疚等不开心的事</div><span class="tag">Escape</span></div>
+    <div class="criteria-card"><div class="num">9</div><h3>💥 影响生活</h3><div class="desc">因游戏失去了人际关系、学业退步、工作出问题</div><span class="tag">Functional Impairment</span></div>
+  </div>
+  <div style="background:var(--purple-light);border-radius:var(--radius);padding:14px 20px;margin:16px 0;">
+    <strong style="color:#7c3aed;">🌐 ICD-11</strong> <span style="font-size:13px;color:var(--text-secondary);">3 条核心特征全部满足，持续 12 个月（严重可缩短）</span>
+  </div>
+  <div class="criteria-grid">
+    <div class="criteria-card icd"><div class="num">①</div><h3>🎮 控制不了游戏行为</h3><div class="desc">什么时候玩、玩多久、什么时候停，全都控制不住</div><span class="tag">Impaired Control</span></div>
+    <div class="criteria-card icd"><div class="num">②</div><h3>🥇 游戏比什么都重要</h3><div class="desc">游戏在生活中的地位越来越高，学习、工作、社交都得让路</div><span class="tag">Increasing Priority</span></div>
+    <div class="criteria-card icd"><div class="num">③</div><h3>⚠️ 明明有坏结果还是继续玩</h3><div class="desc">成绩下降、被骂、吵架……但还是要玩游戏</div><span class="tag">Continued Despite Harm</span></div>
+  </div>
+</div>
+
+<div class="section" id="compare">
+  <div class="section-header"><h2>⚖️ DSM-5 vs ICD-11</h2></div>
+  <div class="comp-wrap">
+    <table class="comp-table">
+      <thead><tr><th>对比项目</th><th>🇺🇸 DSM-5</th><th>🌐 ICD-11</th></tr></thead>
+      <tbody>
+        <tr><td>诊断名称</td><td>网络游戏障碍 (IGD)</td><td>游戏障碍 (GD)</td></tr>
+        <tr><td>归属</td><td>附录（还需更多研究）</td><td>正式诊断类别</td></tr>
+        <tr><td>标准数量</td><td>9 条</td><td>3 条核心特征</td></tr>
+        <tr><td>诊断门槛</td><td>≥5/9</td><td>3 条都要满足</td></tr>
+        <tr><td>游戏类型</td><td>仅限网络游戏</td><td>线上和线下都算</td></tr>
+        <tr><td>时间要求</td><td>12 个月</td><td>12 个月（严重可缩短）</td></tr>
+        <tr><td>越玩越久</td><td>✅ 有</td><td>❌ 没提</td></tr>
+        <tr><td>戒断反应</td><td>✅ 有</td><td>❌ 没提</td></tr>
+        <tr><td>偷偷玩</td><td>✅ 有</td><td>❌ 没提</td></tr>
+        <tr><td>误诊风险</td><td>容易高估</td><td>更严格</td></tr>
+        <tr><td>研究数量</td><td>大量（2013~）</td><td>渐增（2019~）</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section" id="tools">
+  <div class="section-header"><h2>🔬 评估工具</h2></div>
+  <p style="font-size:13px;color:var(--text-secondary);margin-bottom:16px;">点击卡片标题或"展开全部"查看完整条目</p>
+  <div class="tool-grid">
+    <div class="tool-card">
+      <div class="tool-card-header t1" onclick="toggleTool(this)">
+        <span class="tname">📝 IGD Scale (27题)</span><span class="tabbr">▼</span>
+      </div>
+      <div class="tool-card-body">
+        <div class="tmeta"><span>📅 2015</span><span>👤 Lemmens</span><span>📰 Psychological Assessment</span></div>
+        <div class="titems-wrap">
+          <div class="titems">
+            <strong>DSM-5 9 条标准各 3 题 · 5 点量表</strong><br><br>
+            <strong>沉迷</strong>：① 大部分时间在想游戏？② 上课/工作时常想着？③ 空闲时间被游戏占据？<br><br>
+            <strong>戒断</strong>：④ 不能玩时烦躁？⑤ 不能玩时焦虑/悲伤？⑥ 不能玩时空虚？<br><br>
+            <strong>耐受</strong>：⑦ 需要越来越久？⑧ 以前够的时长现在不够？⑨ 想玩更久获得快感？<br><br>
+            <strong>失控</strong>：⑩ 尝试减少但失败？⑪ 玩的时间超出预期？⑫ 难以停止？<br><br>
+            <strong>放弃其他活动</strong>：⑬ 因游戏放弃爱好？⑭ 减少和朋友相处？⑮ 对以前活动失去兴趣？<br><br>
+            <strong>持续过度使用</strong>：⑯ 明知有问题还在玩？⑰ 明知影响健康还在玩？⑱ 家人反对仍玩？<br><br>
+            <strong>欺骗</strong>：⑲ 对家人隐瞒？⑳ 对朋友撒谎？㉑ 隐藏游戏行为？<br><br>
+            <strong>逃避情绪</strong>：㉒ 用游戏逃避不开心？㉓ 缓解焦虑/压力？㉔ 心情不好更想玩？<br><br>
+            <strong>功能损害</strong>：㉕ 失去重要关系？㉖ 学业/工作下降？㉗ 和家人/朋友严重冲突？
+          </div>
+        </div>
+        <button class="expand-btn" onclick="toggleToolBtn(this)">展开全部 27 题 <span class="arrow">▼</span></button>
+        <div class="tref">📖 <a href="https://doi.org/10.1037/pas0000062" target="_blank">查看原文</a> · 第一个严格基于 DSM-5 的量表</div>
+      </div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-card-header t2" onclick="toggleTool(this)">
+        <span class="tname">⚡ IGDS9-SF (9题)</span><span class="tabbr">▼</span>
+      </div>
+      <div class="tool-card-body">
+        <div class="tmeta"><span>📅 2015</span><span>👤 Pontes & Griffiths</span><span>📰 Computers in Human Behavior</span></div>
+        <div class="titems-wrap">
+          <div class="titems">
+            <strong>DSM-5 9 条标准各 1 题 · 5 点（1=从不 ~ 5=非常频繁）· 总分 9-45</strong><br><br>
+            ① 全神贯注于游戏？<br>② 不能玩时不安/烦躁？<br>③ 需要越来越多时间？<br>④ 尝试减少但失败？<br>⑤ 因游戏放弃其他活动？<br>⑥ 明知有坏影响还在玩？<br>⑦ 对他人隐瞒时间？<br>⑧ 用游戏逃避负面情绪？<br>⑨ 游戏导致冲突或问题？
+          </div>
+        </div>
+        <button class="expand-btn" onclick="toggleToolBtn(this)">展开全部 9 题 <span class="arrow">▼</span></button>
+        <div class="tref">📖 <a href="https://doi.org/10.1016/j.chb.2014.12.006" target="_blank">查看原文</a> · 应用最广！20+ 种语言</div>
+      </div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-card-header t3" onclick="toggleTool(this)">
+        <span class="tname">🌍 IGDT-10 (10题)</span><span class="tabbr">▼</span>
+      </div>
+      <div class="tool-card-body">
+        <div class="tmeta"><span>📅 2019</span><span>👤 Király</span><span>📰 Psychology of Addictive Behaviors</span></div>
+        <div class="titems-wrap">
+          <div class="titems">
+            <strong>3 点量表（从不/有时/经常）· 7 种语言验证</strong><br><br>
+            ① 经常想着或期待下一次玩游戏？（沉迷）<br>② 不能玩时不安/难过？（戒断）<br>③ 需要越来越多时间才能满足？（耐受）<br>④ 曾想少玩但没做到？（失控）<br>⑤ 因游戏对以前的爱好失去兴趣？（放弃）<br>⑥ 明知有坏影响仍然继续？（持续过度）<br>⑦ 对家人/朋友隐瞒游戏时间？（欺骗）<br>⑧ 用游戏逃避不好的感觉？（逃避情绪）<br>⑨ 游戏导致和他人严重冲突？（功能损害）<br>⑩ 游戏影响学业/工作/家庭？（额外功能损害）
+          </div>
+        </div>
+        <button class="expand-btn" onclick="toggleToolBtn(this)">展开全部 10 题 <span class="arrow">▼</span></button>
+        <div class="tref">📖 <a href="https://doi.org/10.1037/adb0000433" target="_blank">查看原文</a> · 跨文化效度最强</div>
+      </div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-card-header t4" onclick="toggleTool(this)">
+        <span class="tname">🏥 GDT (4题)</span><span class="tabbr">▼</span>
+      </div>
+      <div class="tool-card-body">
+        <div class="tmeta"><span>📅 2024</span><span>👤 Siřínková</span><span>📰 J Psychiatric Research</span></div>
+        <div class="titems-wrap">
+          <div class="titems">
+            <strong>基于 ICD-11 · 5 点（1=从不 ~ 5=非常频繁）</strong><br><br>
+            ① 难以控制游戏行为？（失控）<br>② 游戏比其他事情更重要？（优先）<br>③ 即使有负面后果仍继续玩？（不顾后果）<br>④ 游戏对生活造成显著影响？（功能损害）
+          </div>
+        </div>
+        <button class="expand-btn" onclick="toggleToolBtn(this)">展开全部 4 题 <span class="arrow">▼</span></button>
+        <div class="tref">📖 <a href="https://doi.org/10.1016/j.jpsychires.2024.05.023" target="_blank">查看原文</a> · 首个 ICD-11 工具评估</div>
+      </div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-card-header t5" onclick="toggleTool(this)">
+        <span class="tname">🕰️ PVP (9题)</span><span class="tabbr">▼</span>
+      </div>
+      <div class="tool-card-body">
+        <div class="tmeta"><span>📅 2011</span><span>👤 Gentile</span><span>📰 Pediatrics</span></div>
+        <div class="titems-wrap">
+          <div class="titems">
+            <strong>改编自 DSM 病理性赌博标准 · 二选一（是/否）</strong><br><br>
+            ① 全神贯注于游戏？<br>② 需要越来越长时间才能满足？<br>③ 尝试减少但失败？<br>④ 不能玩时烦躁/焦虑/难过？<br>⑤ 用游戏逃避问题？<br>⑥ 对家人/朋友隐瞒？<br>⑦ 因游戏冒险或失去重要关系？<br>⑧ 因游戏逃学或忽视责任？<br>⑨ 借钱玩游戏或买游戏物品？
+          </div>
+        </div>
+        <button class="expand-btn" onclick="toggleToolBtn(this)">展开全部 9 题 <span class="arrow">▼</span></button>
+        <div class="tref">📖 <a href="https://doi.org/10.1542/peds.2010-1353" target="_blank">查看原文</a> · 开创性研究</div>
+      </div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-card-header t6" onclick="toggleTool(this)">
+        <span class="tname">📐 GAIT (7题)</span><span class="tabbr">▼</span>
+      </div>
+      <div class="tool-card-body">
+        <div class="tmeta"><span>基于 Griffiths 2005 成瘾成分模型</span></div>
+        <div class="titems-wrap">
+          <div class="titems">
+            <strong>基于"行为成瘾六成分"· 5 点量表</strong><br><br>
+            ① 游戏是否是你生活中最重要的事？（显著性）<br>② 是否通过游戏改变情绪？（情绪调节）<br>③ 是否需要越来越多时间？（耐受）<br>④ 不能玩时是否不适？（戒断）<br>⑤ 游戏是否导致冲突？（冲突）<br>⑥ 是否戒了又玩玩又戒？（复发）<br>⑦ 游戏是否对生活造成负面影响？（功能损害）
+          </div>
+        </div>
+        <button class="expand-btn" onclick="toggleToolBtn(this)">展开全部 7 题 <span class="arrow">▼</span></button>
+        <div class="tref">📖 基于 Griffiths (2005) 六成分模型</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section" id="timeline">
+  <div class="section-header"><h2>📅 发展历程</h2></div>
+  <div class="timeline">
+    <div class="timeline-item"><div class="tl-year">2005</div><div class="tl-card"><div class="tl-title">🧩 Griffiths 提出"成瘾六成分"</div><div class="tl-meta">显著性、情绪调节、耐受、戒断、冲突、复发——为后来所有量表提供理论基础</div><span class="tl-badge theory">理论奠基</span></div></div>
+    <div class="timeline-item"><div class="tl-year">2011</div><div class="tl-card"><div class="tl-title">📊 Gentile 首个大规模纵向研究</div><div class="tl-meta">新加坡 3000+ 青少年追踪 2 年，首次揭示病理性游戏的长期影响</div><span class="tl-badge original">开创性研究</span></div></div>
+    <div class="timeline-item"><div class="tl-year">2013</div><div class="tl-card"><div class="tl-title">📋 King 系统综述 18 种评估工具</div><div class="tl-meta">发现工具不一致，呼吁统一评估方法</div><span class="tl-badge sr">系统综述</span></div></div>
+    <div class="timeline-item"><div class="tl-year">2013</div><div class="tl-card"><div class="tl-title">📖 DSM-5 发布</div><div class="tl-meta">9 条标准，≥5 条持续 12 个月，IGD 首次被提出</div><span class="tl-badge milestone">里程碑</span></div></div>
+    <div class="timeline-item"><div class="tl-year">2014</div><div class="tl-card"><div class="tl-title">🤝 Petry 国际专家共识</div><div class="tl-meta">各国专家敲定 DSM-5 标准评估 IGD 的方法</div><span class="tl-badge original">共识文件</span></div></div>
+    <div class="timeline-item"><div class="tl-year">2015</div><div class="tl-card"><div class="tl-title">📝 Lemmens IGD Scale + Pontes IGDS9-SF</div><div class="tl-meta">两个最重要的量表同年诞生，IGDS9-SF 成为全球最广泛使用的工具</div><span class="tl-badge original">工具开发</span></div></div>
+    <div class="timeline-item"><div class="tl-year">2016</div><div class="tl-card"><div class="tl-title">🧩 Brand I-PACE 模型</div><div class="tl-meta">解释"为什么会游戏成瘾"的完整理论框架</div><span class="tl-badge theory">理论模型</span></div></div>
+    <div class="timeline-item"><div class="tl-year">2017</div><div class="tl-card"><div class="tl-title">⚔️ Aarseth 公开辩论 + Saunders WHO 立场</div><div class="tl-meta">学者质疑 vs WHO 准备将其列为正式诊断</div><span class="tl-badge theory">学术辩论</span></div></div>
+    <div class="timeline-item"><div class="tl-year">2019</div><div class="tl-card"><div class="tl-title">🌐 ICD-11 发布 + Király IGDT-10</div><div class="tl-meta">3 条核心特征，游戏障碍成为正式诊断；同年 IGDT-10 7 种语言验证</div><span class="tl-badge milestone">里程碑</span></div></div>
+    <div class="timeline-item"><div class="tl-year">2021</div><div class="tl-card"><div class="tl-title">🌍 Stevens 全球患病率元分析</div><div class="tl-meta">53 项研究 22 万人，全球约 3% 有游戏障碍，工具选择解释 77% 差异</div><span class="tl-badge sr-ma">系统综述+元分析</span></div></div>
+    <div class="timeline-item"><div class="tl-year">2024</div><div class="tl-card"><div class="tl-title">🏥 Siřínková GDT 验证</div><div class="tl-meta">首个基于 ICD-11 的 Gaming Disorder Test 在捷克大样本验证</div><span class="tl-badge sr">验证研究</span></div></div>
+    <div class="timeline-item"><div class="tl-year">2025</div><div class="tl-card"><div class="tl-title">🌎 Blandón-Castaño IGDS9-SF 拉美验证</div><div class="tl-meta">7 个拉美国家验证 IGDS9-SF 跨文化不变性</div><span class="tl-badge sr">验证研究</span></div></div>
+  </div>
+</div>
+
+<div class="section" id="overview">
+  <div class="section-header"><h2>📚 文献概览</h2></div>
+  <div class="ov-grid">
+    <div class="ov-card" onclick="toggleOv(this)">
+      <div class="ov-header"><h3>🔍 系统综述 & 元分析 (11篇)</h3><span class="ov-toggle">▼</span></div>
+      <div class="ov-body">
+        <div class="ov-body-inner">
+          <ul>
+            <li><a href="https://doi.org/10.1016/j.cpr.2013.01.002" target="_blank">King 2013 — Toward a Consensus Definition of Pathological Video-Gaming</a> <span class="yr p3">系统综述</span></li>
+            <li><a href="https://doi.org/10.1002/jclp.22097" target="_blank">King 2014 — IGD Treatment: Definitions of Diagnosis</a> <span class="yr p3">系统综述</span></li>
+            <li><a href="https://doi.org/10.1016/j.cpr.2019.101777" target="_blank">King 2019 — Maladaptive Player-Game Relationships</a> <span class="yr p3">系统综述</span></li>
+            <li><a href="https://doi.org/10.1016/j.cpr.2020.101831" target="_blank">King 2020 — Screening and Assessment Tools for GD</a> <span class="yr p3">系统综述</span></li>
+            <li><a href="https://doi.org/10.1016/j.psychres.2022.114712" target="_blank">Poon 2021 — IGDS9-SF Psychometric Review</a> <span class="yr p3">系统综述</span></li>
+            <li><a href="https://doi.org/10.3390/brainsci2030347" target="_blank">Kuss 2012 — Neuroimaging of Internet/Gaming Addiction</a> <span class="yr p3">系统综述</span></li>
+            <li><a href="https://doi.org/10.3389/fpsyt.2018.00166" target="_blank">Kuss 2018 — Neurobiological Correlates in IGD</a> <span class="yr p3">系统综述</span></li>
+            <li><a href="https://doi.org/10.1177/0004867420962851" target="_blank">Stevens 2021 — Global Prevalence of GD</a> <span class="yr p1">系统综述+元分析</span></li>
+            <li><a href="https://doi.org/10.1002/brb3.3388" target="_blank">Yu 2024 — EEG Components in IGD</a> <span class="yr p1">系统综述+元分析</span></li>
+            <li><a href="https://doi.org/10.1111/sjop.12459" target="_blank">Fam 2018 — Prevalence of IGD in Adolescents</a> <span class="yr p4">元分析</span></li>
+            <li><a href="https://doi.org/10.1556/2006.7.2018.39" target="_blank">Starcke 2018 — Cue-Reactivity in Behavioral Addictions</a> <span class="yr p4">元分析</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="ov-card purple" onclick="toggleOv(this)">
+      <div class="ov-header"><h3>✅ 直接相关 · 判断标准 (7篇)</h3><span class="ov-toggle">▼</span></div>
+      <div class="ov-body">
+        <div class="ov-body-inner">
+          <ul>
+            <li>DSM-5 手册 2013 <span class="yr p2">原始标准</span></li>
+            <li>ICD-11 2019 <span class="yr p2">原始标准</span></li>
+            <li><a href="https://doi.org/10.1111/add.12457" target="_blank">Petry 2014 — International Consensus for Assessing IGD</a> <span class="yr p2">国际共识</span></li>
+            <li><a href="https://doi.org/10.1556/2006.6.2017.039" target="_blank">Saunders 2017 — Gaming Disorder Delineation</a> <span class="yr p2">WHO 立场</span></li>
+            <li><a href="https://doi.org/10.1556/2006.5.2016.088" target="_blank">Aarseth 2017 — Scholars Open Debate Paper</a> <span class="yr p4">学术辩论</span></li>
+            <li><a href="https://doi.org/10.1556/2006.8.2019.19" target="_blank">Besser 2019 — DSM-5 Criteria Performance</a> <span class="yr p2">标准检验</span></li>
+            <li><a href="https://doi.org/10.1016/j.cpr.2013.01.002" target="_blank">King 2013 — Consensus Definition</a> <span class="yr p3">共识定义</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="ov-card orange" onclick="toggleOv(this)">
+      <div class="ov-header"><h3>✅ 直接相关 · 评估工具 (8篇)</h3><span class="ov-toggle">▼</span></div>
+      <div class="ov-body">
+        <div class="ov-body-inner">
+          <ul>
+            <li><a href="https://doi.org/10.1037/pas0000062" target="_blank">Lemmens 2015 — The Internet Gaming Disorder Scale</a> <span class="yr p2">IGDS 原始开发</span></li>
+            <li><a href="https://doi.org/10.1016/j.chb.2014.12.006" target="_blank">Pontes 2015 — IGDS9-SF Development</a> <span class="yr p2">IGDS9-SF 原始开发</span></li>
+            <li><a href="https://doi.org/10.1556/2006.5.2016.083" target="_blank">Monacis 2016 — IGDS9-SF Italian Validation</a> <span class="yr p2">意大利验证</span></li>
+            <li><a href="https://doi.org/10.1037/adb0000433" target="_blank">Király 2019 — IGDT-10 Cross-Cultural</a> <span class="yr p2">IGDT-10 开发</span></li>
+            <li><a href="https://doi.org/10.1016/j.psychres.2022.114712" target="_blank">Poon 2021 — IGDS9-SF Systematic Review</a> <span class="yr p3">系统综述</span></li>
+            <li><a href="https://doi.org/10.1016/j.jpsychires.2024.05.023" target="_blank">Siřínková 2024 — GDT Psychometric Properties</a> <span class="yr p2">GDT 验证</span></li>
+            <li><a href="https://doi.org/10.1007/s11469-024-01376-z" target="_blank">Blandón-Castaño 2025 — IGDS9-SF Latin America</a> <span class="yr p2">拉美验证</span></li>
+            <li><a href="https://doi.org/10.1016/j.cpr.2020.101831" target="_blank">King 2020 — Assessment Tools Systematic Review</a> <span class="yr p3">工具综述</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="ov-card pink" onclick="toggleOv(this)">
+      <div class="ov-header"><h3>🧩 理论模型 (3篇)</h3><span class="ov-toggle">▼</span></div>
+      <div class="ov-body">
+        <div class="ov-body-inner">
+          <ul>
+            <li><a href="https://doi.org/10.1080/14659890500114359" target="_blank">Griffiths 2005 — Components Model of Addiction</a> <span class="yr p4">六成分模型</span></li>
+            <li><a href="https://doi.org/10.1016/j.neubiorev.2016.08.033" target="_blank">Brand 2016 — I-PACE Model</a> <span class="yr p2">I-PACE 模型</span></li>
+            <li><a href="https://doi.org/10.1007/s40429-017-0158-7" target="_blank">Starcevic 2017 — IGD, OCD, and Addiction</a> <span class="yr p2">IGD vs OCD</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="ov-card green" onclick="toggleOv(this)">
+      <div class="ov-header"><h3>🔬 其他相关研究 (17篇)</h3><span class="ov-toggle">▼</span></div>
+      <div class="ov-body">
+        <div class="ov-body-inner">
+          <ul>
+            <li>🧠 <strong>脑科学</strong>：<a href="https://doi.org/10.3390/brainsci2030347" target="_blank">Kuss 2012</a>, <a href="https://doi.org/10.3389/fpsyt.2018.00166" target="_blank">Kuss 2018</a>, <a href="https://doi.org/10.1016/j.neubiorev.2017.01.040" target="_blank">Weinstein 2017</a>, <a href="https://doi.org/10.1016/j.jpsychires.2019.03.003" target="_blank">Dong 2019</a>, <a href="https://doi.org/10.1002/brb3.3388" target="_blank">Yu 2024</a>, <a href="https://doi.org/10.1016/j.addbeh.2020.106446" target="_blank">Wölfling 2020</a>, <a href="https://doi.org/10.1556/2006.7.2018.39" target="_blank">Starcke 2018</a></li>
+            <li>📊 <strong>患病率</strong>：<a href="https://doi.org/10.1177/0004867420962851" target="_blank">Stevens 2021</a>, <a href="https://doi.org/10.1111/sjop.12459" target="_blank">Fam 2018</a></li>
+            <li>👥 <strong>纵向研究</strong>：<a href="https://doi.org/10.1542/peds.2010-1353" target="_blank">Gentile 2011</a>, <a href="https://doi.org/10.1016/j.chb.2017.11.008" target="_blank">Peeters 2018</a>, <a href="https://doi.org/10.1017/s003329171800082x" target="_blank">Wartberg 2019</a>, <a href="https://doi.org/10.1556/2006.2021.00016" target="_blank">Teng 2021</a></li>
+            <li>🧪 <strong>实验研究</strong>：<a href="https://doi.org/10.1016/j.chb.2010.11.005" target="_blank">Decker 2011</a>, <a href="https://doi.org/10.1556/2006.5.2016.012" target="_blank">Jeromin 2016</a></li>
+            <li>🎮 <strong>游戏类型</strong>：<a href="https://doi.org/10.1016/j.cpr.2019.101777" target="_blank">King 2019</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="ov-card yellow" onclick="toggleOv(this)">
+      <div class="ov-header"><h3>📊 研究类型统计</h3><span class="ov-toggle">▼</span></div>
+      <div class="ov-body">
+        <div class="ov-body-inner">
+          <ul>
+            <li>🔍 系统综述 <span class="yr p3">8篇</span></li>
+            <li>📈 元分析 <span class="yr p4">2篇</span></li>
+            <li>🔍+📈 系统综述+元分析 <span class="yr p1">3篇</span></li>
+            <li>📝 量表开发/验证 <span class="yr p2">8篇</span></li>
+            <li>🔬 实验/实证研究 <span class="yr p2">8篇</span></li>
+            <li>🧩 理论/综述/其他 <span class="yr p2">6篇</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section" id="cards">
+  <div class="section-header"><h2>📇 知识卡片（35篇）</h2></div>
+  <div class="kc-controls">
+    <input type="text" id="searchInput" placeholder="🔍 搜索标题、作者、关键词……" oninput="filterCards()">
+    <select id="filterType" onchange="filterCards()" style="display:none;">
+      <option value="all">全部</option>
+      <option value="direct">直接相关</option>
+      <option value="indirect">间接相关</option>
+      <option value="sr">系统综述/元分析</option>
+      <option value="classic">经典文献</option>
+    </select>
+  </div>
+  <div class="kc-grid" id="kcGrid"></div>
+</div>
+
+</div>
+
+<button class="scroll-top" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">🚀</button>
+
+<script>
+const papers = [
+{k:'APA2013dsm5',y:2013,t:'Diagnostic and Statistical Manual of Mental Disorders (5th ed.)',a:'American Psychiatric Association',j:'American Psychiatric Publishing',d:'978-0-89042-555-8',r:'direct',sr:false,ma:false,c:'DSM-5 将 IGD 列入附录III，提出 <strong>9 条诊断标准</strong>：沉迷、戒断、耐受、失控、放弃其他活动、持续过度使用、欺骗、逃避负性情绪、功能损害。≥5 条、持续 12 个月。后续所有评估工具均基于此。'},
+{k:'WHO2019icd11',y:2019,t:'International Classification of Diseases (11th ed.)',a:'World Health Organization',j:'WHO',d:'',r:'direct',sr:false,ma:false,c:'ICD-11 将 <strong>Gaming Disorder (6C51)</strong> 纳入"成瘾行为障碍"章节，正式诊断。3 条核心特征：失控、优先、不顾后果。不含耐受和戒断，阈值更严格。'},
+{k:'Saunders2017gaming',y:2017,t:'Gaming Disorder: Its Delineation as an Important Condition for Diagnosis, Management, and Prevention',a:'Saunders JB et al.',j:'Journal of Behavioral Addictions',d:'10.1556/2006.6.2017.039',r:'direct',sr:false,ma:false,c:'WHO 专家组立场论文，论证游戏障碍纳入 ICD-11 的诊断、管理、预防依据，回应学术质疑。'},
+{k:'Aarseth2017debate',y:2017,t:"Scholars' Open Debate Paper on the WHO ICD-11 Gaming Disorder Proposal",a:'Aarseth E et al.',j:'Journal of Behavioral Addictions',d:'10.1556/2006.5.2016.088',r:'direct',sr:false,ma:false,c:'26 位学者质疑 ICD-11 纳入游戏障碍：缺乏标准工具、方法学问题、道德恐慌、过度医疗化。引发领域最激烈学术辩论。'},
+{k:'Petry2014consensus',y:2014,t:'An International Consensus for Assessing IGD Using the New DSM-5 Approach',a:'Petry NM et al.',j:'Addiction',d:'10.1111/add.12457',r:'direct',sr:false,ma:false,c:'DSM-5 发布后首个国际专家共识，统一 IGD 评估方法，解读 9 条标准在研究和临床中的应用。'},
+{k:'besserPerformanceDSM5basedCriteria2019',y:2019,t:'Performance of the DSM-5-based Criteria for Internet Addiction',a:'Besser B et al.',j:'Journal of Behavioral Addictions',d:'10.1556/2006.8.2019.19',r:'direct',sr:false,ma:false,c:'三个样本检验 DSM-5 标准。标准 8（逃避情绪）<strong>鉴别力差</strong>，不适合区分有/无问题游戏行为。'},
+{k:'kingConsensusDefinitionPathological2013',y:2013,t:'Toward a Consensus Definition of Pathological Video-Gaming',a:'King DL et al.',j:'Clinical Psychology Review',d:'10.1016/j.cpr.2013.01.002',r:'direct',sr:true,ma:false,c:'63 项研究、18 种工具的系统综述。工具严重不一致，共识：戒断、失控、冲突是核心维度。'},
+{k:'kingInternetGamingDisorder2014',y:2014,t:'IGD Treatment: A Review of Definitions of Diagnosis and Treatment Outcome',a:'King DL, Delfabbro PH',j:'Journal of Clinical Psychology',d:'10.1002/jclp.22097',r:'direct',sr:true,ma:false,c:'仅 8 项治疗研究，仅 2 项用等效诊断方法。证据不足以证明 IGD 干预有长期疗效。'},
+{k:'lemmensInternetGamingDisorder2015',y:2015,t:'The Internet Gaming Disorder Scale',a:'Lemmens JS, Valkenburg PM, Gentile DA',j:'Psychological Assessment',d:'10.1037/pas0000062',r:'direct',sr:false,ma:false,c:'第一个严格基于 DSM-5 的量表，27 题（每条标准 3 题），信效度良好（α>0.90）。'},
+{k:'pontesMeasuringDSM5Internet2015',y:2015,t:'Measuring DSM-5 IGD: Development and Validation of a Short Psychometric Scale',a:'Pontes HM, Griffiths MD',j:'Computers in Human Behavior',d:'10.1016/j.chb.2014.12.006',r:'direct',sr:false,ma:false,c:'开发 <strong>IGDS9-SF</strong>，9 题（每条标准 1 题），5 点量表。应用最广的 IGD 工具，20+ 种语言。'},
+{k:'Monacis2016IGDS9',y:2016,t:'Validation of the IGDS9-SF in an Italian-speaking Sample',a:'Monacis L et al.',j:'Journal of Behavioral Addictions',d:'10.1556/2006.5.2016.083',r:'direct',sr:false,ma:false,c:'IGDS9-SF 意大利验证，支持单因子结构，α>0.80。'},
+{k:'Kiraly2019IGDT10',y:2019,t:'Ten-Item Internet Gaming Disorder Test (IGDT-10)',a:'Király O et al.',j:'Psychology of Addictive Behaviors',d:'10.1037/adb0000433',r:'direct',sr:false,ma:false,c:'10 题、3 点量表，7 种语言验证，<strong>测量不变性</strong>支持跨文化比较。'},
+{k:'kingScreeningAssessmentTools2020',y:2020,t:'Screening and Assessment Tools for Gaming Disorder: A Comprehensive Systematic Review',a:'King DL et al.',j:'Clinical Psychology Review',d:'10.1016/j.cpr.2020.101831',r:'direct',sr:true,ma:false,c:'最全面的工具综述，评价 32 种工具。提供选择指南，多数工具缺乏临床切分点验证。'},
+{k:'Poon2021systematic',y:2021,t:'A Systematic Review of the Psychometric Properties of the IGDS9-SF',a:'Poon LYJ et al.',j:'Psychiatry Research',d:'10.1016/j.psychres.2022.114712',r:'direct',sr:true,ma:false,c:'IGDS9-SF 系统综述，α 0.80-0.90，单因子结构稳定，部分样本项目 8 因子载荷有问题。'},
+{k:'sirinkovaGamingDisorderTest2024',y:2024,t:'Gaming Disorder Test: Psychometric Properties, Prevalence, Temporal Stability',a:'Siřínková D, Blinka L, Montag C',j:'J Psychiatric Research',d:'10.1016/j.jpsychires.2024.05.023',r:'direct',sr:false,ma:false,c:'首个 ICD-11 GDT 心理测量评估。捷克大样本（n>5000），患病率 1.9%，纵向 0.5%。'},
+{k:'Blandon2025CrossCultural',y:2025,t:'Cross-Cultural Invariance of the IGDS9-SF in Seven Latin American Countries',a:'Blandón-Castaño JA et al.',j:'Int J Mental Health Addiction',d:'10.1007/s11469-024-01376-z',r:'direct',sr:false,ma:false,c:'7 个拉美国家验证 IGDS9-SF 跨文化不变性。'},
+{k:'stevensGlobalPrevalenceGaming2021',y:2021,t:'Global Prevalence of Gaming Disorder: A Systematic Review and Meta-Analysis',a:'Stevens MWR et al.',j:'Aust NZ J Psychiatry',d:'10.1177/0004867420962851',r:'indirect',sr:true,ma:true,c:'53 项研究 22 万人，全球患病率 <strong>3.05%</strong>。工具选择解释 77% 变异。男:女≈2.5:1。'},
+{k:'famPrevalenceInternetGaming2018',y:2018,t:'Prevalence of IGD in Adolescents: A Meta-Analysis across Three Decades',a:'Fam JY',j:'Scandinavian J Psychology',d:'10.1111/sjop.12459',r:'indirect',sr:false,ma:true,c:'16 项研究，青少年 4.6%（男 6.8%，女 1.3%）。方法学缺陷影响估计。'},
+{k:'brandIntegratingPsychologicalNeurobiological2016',y:2016,t:'I-PACE Model: Integrating Psychological and Neurobiological Considerations',a:'Brand M et al.',j:'Neuroscience & Biobehavioral Reviews',d:'10.1016/j.neubiorev.2016.08.033',r:'indirect',sr:false,ma:false,c:'<strong>I-PACE 模型</strong>：易感因素×调节变量×中介变量+执行功能降低的交互作用。网络使用障碍最重要理论框架。'},
+{k:'griffithsComponentsModelAddiction2005',y:2005,t:"A 'Components' Model of Addiction within a Biopsychosocial Framework",a:'Griffiths M',j:'Journal of Substance Use',d:'10.1080/14659890500114359',r:'indirect',sr:false,ma:false,c:'六成分模型：显著性、情绪调节、耐受、戒断、冲突、复发。被引超 10000 次，IGD 诊断标准的重要理论基础。'},
+{k:'Starcevic2017OCD',y:2017,t:'IGD, Obsessive-Compulsive Disorder, and Addiction',a:'Starcevic V, Aboujaoude E',j:'Current Addiction Reports',d:'10.1007/s40429-017-0158-7',r:'indirect',sr:false,ma:false,c:'IGD 更接近行为成瘾而非 OCD，但某些表现与 OCD 重叠，需鉴别诊断。'},
+{k:'Kuss2012Neuroimaging',y:2012,t:'Internet and Gaming Addiction: A Systematic Literature Review of Neuroimaging Studies',a:'Kuss DJ, Griffiths MD',j:'Brain Sciences',d:'10.3390/brainsci2030347',r:'indirect',sr:true,ma:false,c:'早期神经影像系统综述。IGD 与物质成瘾神经机制相似，涉及奖赏系统改变。'},
+{k:'Kuss2018Neurobiological',y:2018,t:'Neurobiological Correlates in IGD: A Systematic Literature Review',a:'Kuss DJ, Pontes HM, Griffiths MD',j:'Frontiers in Psychiatry',d:'10.3389/fpsyt.2018.00166',r:'indirect',sr:true,ma:false,c:'IGD 与 PFC、纹状体、岛叶、ACC 改变相关，与物质使用障碍神经改变模式相似。'},
+{k:'weinsteinNewDevelopmentsBrain2017',y:2017,t:'New Developments in Brain Research of Internet and Gaming Disorder',a:'Weinstein A, Livny A, Weizman A',j:'Neuroscience & Biobehavioral Reviews',d:'10.1016/j.neubiorev.2017.01.040',r:'indirect',sr:false,ma:false,c:'fMRI 显示 IGD 与注意、冲动控制、情绪相关脑区改变。多巴胺释放与药物滥用相似。'},
+{k:'yuEEGComponentsInhibitory2024',y:2024,t:'EEG Components of Inhibitory Control in IGD: Systematic Review and Meta-Analysis',a:'Yu JJ et al.',j:'Brain and Behavior',d:'10.1002/brb3.3388',r:'indirect',sr:true,ma:true,c:'5 项 RCT 元分析。IGD 组 N2/P3 振幅更大，抑制控制需更多认知资源。'},
+{k:'Starcke2018CueReactivity',y:2018,t:'Cue-Reactivity in Behavioral Addictions: A Meta-Analysis',a:'Starcke K et al.',j:'Journal of Behavioral Addictions',d:'10.1556/2006.7.2018.39',r:'indirect',sr:false,ma:true,c:'游戏线索诱发 IGD 主观渴求和生理反应，类似物质成瘾线索反应。'},
+{k:'dongBrainResponseFeatures2019',y:2019,t:'Brain Response Features during Forced Break Could Predict Recovery in IGD',a:'Dong G et al.',j:'Journal of Psychiatric Research',d:'10.1016/j.jpsychires.2019.03.003',r:'indirect',sr:false,ma:false,c:'fMRI 纵向研究。DLPFC 和岛叶激活模式可能是 IGD 持续和康复的神经标记。'},
+{k:'wolflingDiscountingDelayedMonetary2020',y:2020,t:'Discounting Delayed Monetary Rewards in Behavioral Addictions',a:'Wölfling K et al.',j:'Addictive Behaviors',d:'10.1016/j.addbeh.2020.106446',r:'indirect',sr:false,ma:false,c:'赌博障碍和 IGD 均偏好即时奖励，为 IGD 作为行为成瘾提供实证。'},
+{k:'Gentile2011Longitudinal',y:2011,t:'Pathological Video Game Use among Youths: A Two-Year Longitudinal Study',a:'Gentile DA et al.',j:'Pediatrics',d:'10.1542/peds.2010-1353',r:'indirect',sr:false,ma:false,c:'新加坡 n=3034，2 年追踪。首个大规模纵向研究。病理性游戏约 9%。'},
+{k:'peetersPredictingInternetGaming2018',y:2018,t:'Predicting IGD Symptoms in Young Adolescents',a:'Peeters M et al.',j:'Computers in Human Behavior',d:'10.1016/j.chb.2017.11.008',r:'indirect',sr:false,ma:false,c:'354 名青少年 1 年追踪。注意力和社交脆弱预测 IGD。'},
+{k:'Wartberg2019Longitudinal',y:2019,t:'A Longitudinal Study on Psychosocial Causes and Consequences of IGD in Adolescence',a:'Wartberg L et al.',j:'Psychological Medicine',d:'10.1017/s003329171800082x',r:'indirect',sr:false,ma:false,c:'低生活满意度、差社会关系→IGD→恶化心理健康，支持恶性循环模型。'},
+{k:'tengDepressionAnxietySymptoms2021',y:2021,t:'Depression and Anxiety Symptoms with IGD before and during COVID-19',a:'Teng Z et al.',j:'Journal of Behavioral Addictions',d:'10.1556/2006.2021.00016',r:'indirect',sr:false,ma:false,c:'1778 名儿童青少年 COVID-19 前后。抑郁焦虑→IGD，支持补偿假说。'},
+{k:'kingMaladaptivePlayergameRelationships2019',y:2019,t:'Maladaptive Player-Game Relationships in Problematic Gaming and GD',a:'King DL et al.',j:'Clinical Psychology Review',d:'10.1016/j.cpr.2019.101777',r:'indirect',sr:true,ma:false,c:'23 项研究系统综述。MMORPG 与 GD 关联最强，社交焦虑和冲动性分别是 MMORPG 和射击游戏玩家的特征。'},
+{k:'deckerCognitivebiasGamingrelatedWords2011',y:2011,t:'Cognitive-Bias toward Gaming-Related Words in WoW Gamers',a:'Decker SA, Gay JN',j:'Computers in Human Behavior',d:'10.1016/j.chb.2010.11.005',r:'indirect',sr:false,ma:false,c:'Go/No-go 实验。WoW 玩家对游戏词汇有认知偏差，类似酒精成瘾者。'},
+{k:'Jeromin2016AttentionalBias',y:2016,t:'Attentional Bias in Excessive Internet Gamers: Addiction Stroop',a:'Jeromin F et al.',j:'Journal of Behavioral Addictions',d:'10.1556/2006.5.2016.012',r:'indirect',sr:false,ma:false,c:'成瘾 Stroop 实验。过度游戏者对游戏词汇有注意偏差，类似物质成瘾。'}
+];
+const yearColors = ['y1','y2','y3','y4','y5'];
+
+let currentFilter = 'all';
+
+function renderCards(filtered) {
+  const grid = document.getElementById('kcGrid'); grid.innerHTML = '';
+  filtered.forEach((p,i) => {
+    const badges = [];
+    if (p.sr && p.ma) badges.push('<span class="kc-badge" style="background:#ede9fe;color:#7c3aed;">系统综述+元分析</span>');
+    else if (p.sr) badges.push('<span class="kc-badge" style="background:#e0f7f5;color:#0d9488;">系统综述</span>');
+    else if (p.ma) badges.push('<span class="kc-badge" style="background:#fef9c3;color:#a16207;">元分析</span>');
+    if (p.r === 'direct') badges.push('<span class="kc-badge" style="background:#ffe8e8;color:#ff6b6b;">直接相关</span>');
+    if (p.y <= 2015) badges.push('<span class="kc-badge" style="background:#fce7f3;color:#db2777;">经典</span>');
+    const yc = yearColors[i % yearColors.length];
+    const card = document.createElement('div'); card.className = 'kc-card';
+    card.innerHTML = '<div class="kc-card-header"><span class="kc-year ' + yc + '">' + p.y + '</span><div class="kc-badges">' + badges.join('') + '</div></div><div class="kc-card-body"><div class="kc-title">' + p.t + '</div><div class="kc-authors">' + p.a + '</div><div class="kc-journal">' + p.j + '</div><div class="kc-core">' + p.c + '</div><div class="kc-links">' + (p.d ? '<a class="doi-link" href="https://doi.org/' + p.d.replace(/[\{\}]/g,'') + '" target="_blank">🔗 查看原文</a>' : '') + '<a class="copy-link" href="javascript:void(0)" onclick="copyCite(\'' + p.k + '\')">📋 复制引用</a></div></div>';
+    grid.appendChild(card);
+  });
+}
+
+function filterCards() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const sel = document.getElementById('filterType');
+  const type = currentFilter === 'all' ? sel.value : currentFilter;
+  renderCards(papers.filter(p => {
+    if (q && !(p.t + ' ' + p.a + ' ' + p.c).toLowerCase().includes(q)) return false;
+    if (type === 'direct' && p.r !== 'direct') return false;
+    if (type === 'indirect' && p.r !== 'indirect') return false;
+    if (type === 'sr' && !p.sr && !p.ma) return false;
+    if (type === 'classic' && p.y > 2015) return false;
+    return true;
+  }));
+}
+
+function filterAndScroll(type) {
+  currentFilter = type;
+  document.getElementById('filterType').value = type;
+  document.getElementById('searchInput').value = '';
+  document.getElementById('cards').scrollIntoView({ behavior: 'smooth' });
+  filterCards();
+  document.querySelectorAll('.nav-row2 a').forEach(a => a.style.opacity = '0.6');
+  event.target.style.opacity = '1';
+}
+
+function copyCite(key) {
+  const p = papers.find(x => x.k === key); if (!p) return;
+  const t = p.a + ' (' + p.y + '). ' + p.t + '. ' + (p.j ? p.j + '.' : '');
+  navigator.clipboard.writeText(t).then(() => { alert('✅ 已复制！\n\n' + t); });
+}
+
+function scrollTo(id) {
+  document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+  document.querySelectorAll('.nav-links a, .nav-row2 a').forEach(a => a.classList.remove('active'));
+}
+
+function toggleTool(h) {
+  const w = h.parentElement.querySelector('.titems-wrap'), b = h.parentElement.querySelector('.expand-btn'), i = h.querySelector('.toggle-icon');
+  if (w) { w.classList.toggle('open'); if (i) i.classList.toggle('open'); if (b) b.querySelector('.arrow').classList.toggle('open'); }
+}
+
+function toggleToolBtn(b) {
+  const w = b.parentElement.querySelector('.titems-wrap'), i = b.parentElement.querySelector('.toggle-icon'), a = b.querySelector('.arrow');
+  if (w) { w.classList.toggle('open'); if (i) i.classList.toggle('open'); if (a) a.classList.toggle('open');
+  b.innerHTML = w.classList.contains('open') ? '收起条目 <span class="arrow open">▼</span>' : '展开全部条目 <span class="arrow">▼</span>'; }
+}
+
+function toggleOv(card) {
+  const body = card.querySelector('.ov-body'), toggle = card.querySelector('.ov-toggle');
+  if (body) body.classList.toggle('open');
+  if (toggle) toggle.classList.toggle('open');
+}
+
+window.onscroll = function() {
+  const btn = document.getElementById('scrollTopBtn');
+  btn.style.display = window.scrollY > 300 ? 'block' : 'none';
+  const sp = window.scrollY + 100;
+  ['summary','criteria','compare','tools','timeline','overview','cards'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el && sp >= el.offsetTop && sp < el.offsetTop + el.offsetHeight) {
+      document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+      const link = document.querySelector('.nav-links a[href="#' + id + '"]');
+      if (link) link.classList.add('active');
+    }
+  });
+};
+
+renderCards(papers);
+</script>
+</body>
+</html>
